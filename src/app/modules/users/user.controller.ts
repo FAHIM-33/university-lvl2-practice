@@ -1,0 +1,25 @@
+import type { NextFunction, Request, Response } from 'express'
+import { UserService } from './user.service.js'
+
+const createUserController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { user } = req.body
+  // console.log(user, 'asdfasdfasdf')
+  try {
+    const result = await UserService.createUser(user)
+    res.status(200).json({
+      success: true,
+      message: 'successfully created a murgi',
+      data: result,
+    })
+  } catch (err) {
+    next(err)
+  }
+}
+
+export const UserController = {
+  createUserController,
+}
