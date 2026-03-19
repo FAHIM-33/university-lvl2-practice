@@ -1,16 +1,28 @@
 import type { Model } from 'mongoose'
 
-export type TMonth = 
-  | 'January' | 'February' | 'March' | 'April' 
-  | 'May' | 'June' | 'July' | 'August' 
-  | 'September' | 'October' | 'November' | 'December';
+export type IMonth =
+  | 'January'
+  | 'February'
+  | 'March'
+  | 'April'
+  | 'May'
+  | 'June'
+  | 'July'
+  | 'August'
+  | 'September'
+  | 'October'
+  | 'November'
+  | 'December'
+
+export type ISemesterTitle = 'Autumn' | 'Summer' | 'Fall'
+export type ISemesterCode = '01' | '02' | '03'
 
 export type ISemester = {
-  title: 'Autumn' | 'Summer' | 'Fall'
+  title: ISemesterTitle
   year: number
-  code: "01" | "02" | "03"
-  startMonth: TMonth
-  endMonth: TMonth
+  code: ISemesterCode
+  startMonth: IMonth
+  endMonth: IMonth
   // id: string
   // syncId?: string
   // createdAt?: Date
