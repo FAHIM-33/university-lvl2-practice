@@ -11,8 +11,9 @@ const app = express()
 
 import cors from 'cors'
 import globalErrorHandler from './app/middlewares/globalErrorHandler.js'
-import { UserRoute } from './app/modules/users/user.route.js'
-import { SemesterRoute } from './app/modules/academicSemester/semester.route.js'
+// import { UserRoute } from './app/modules/users/user.route.js'
+// import { SemesterRoute } from './app/modules/academicSemester/semester.route.js'
+import routes from './app/routes/index.js'
 // import ApiError from './error/ApiError.js'
 
 app.use(cors())
@@ -20,9 +21,10 @@ app.use(cors())
 app.use(express.json())
 
 // routes
-app.use('/api/v1/users/', UserRoute)
-app.use('/api/v1/semester/', SemesterRoute)
+// app.use('/api/v1/users/', UserRoute)
+// app.use('/api/v1/semester/', SemesterRoute)
 // app.use('/', arduinoRoute)
+app.use('/api/v1', routes)
 
 //testing
 app.get('/', async (req: Request, res: Response, next: NextFunction) => {

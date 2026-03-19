@@ -1,25 +1,18 @@
-import type { NextFunction, Request, Response } from 'express'
+import type { Request, Response } from 'express'
 import { SemesterService } from './semester.service.js'
+import catchAsync from '../../../shared/catchAsync.js'
 
-const createSemester = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const semesterData = {...req.body}
-    const result = await SemesterService.createSemester(semesterData)
+const createSemester = catchAsync(async (req: Request, res: Response) => {
+  const semesterData = { ...req.body }
+  const result = await SemesterService.createSemester(semesterData)
 
-    res.status(200).json({
-      success: true,
-      message: 'Semester created successfully',
-      data: result,
-    })
-  } catch (err) {
-    next(err)
-  }
-}
+  res.status(200).json({
+    success: true,
+    message: 'Semester created successfully',
+    data: result,
+  })
+})
 
-export const  SemesterController = {
+export const SemesterController = {
   createSemester,
 }
