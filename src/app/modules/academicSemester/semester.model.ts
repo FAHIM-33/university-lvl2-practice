@@ -1,6 +1,12 @@
 import { Schema, model } from 'mongoose'
 import type { ISemester, SemesterModel } from './semester.interface.js'
-import { semesterCodes, semesterMonths, semesterTitles } from './semester.constant.js'
+import {
+  semesterCodes,
+  semesterMonths,
+  semesterTitles,
+} from './semester.constant.js'
+import ApiError from '../../../error/ApiError.js'
+import status from 'http-status'
 
 const semesterSchema = new Schema<ISemester>(
   {
@@ -16,11 +22,23 @@ const semesterSchema = new Schema<ISemester>(
     endMonth: {
       type: String,
       required: true,
-      enum:semesterMonths,
+      enum: semesterMonths,
     },
   },
   { timestamps: true },
 )
+
+// this has to be fefore creating the Model. Order important
+semesterSchema.pre('save', async function () {
+  const isExist = await Semester.findOne({
+    title: this.title,
+    year: this.year,
+  })
+  if (isExist) {
+    throw new ApiError(status.CONFLICT, 'Semester already exist')
+  }
+  // no Next() is needed
+})
 
 export const Semester = model<ISemester, SemesterModel>(
   'Semester',
