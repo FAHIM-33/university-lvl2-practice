@@ -14,6 +14,7 @@ import globalErrorHandler from './app/middlewares/globalErrorHandler.js'
 // import { UserRoute } from './app/modules/users/user.route.js'
 // import { SemesterRoute } from './app/modules/academicSemester/semester.route.js'
 import routes from './app/routes/index.js'
+// import { error } from 'node:console'
 // import ApiError from './error/ApiError.js'
 
 app.use(cors())
@@ -29,11 +30,27 @@ app.use('/api/v1', routes)
 //testing
 app.get('/', async (req: Request, res: Response, next: NextFunction) => {
   res.send('Hello World!')
+  next()
   // throw new ApiError(400, 'bla bla bla')
   // Promise.reject(new Error('unhandled promise rejected'))
 })
 
 //global error handler
 app.use(globalErrorHandler)
+
+//not found route
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.status(404).json({
+    success: false,
+    message: 'Not Route Found',
+    errorMessages: [
+      {
+        path: '.',
+        message: 'API Not Found',
+      },
+    ],
+  })
+  next()
+})
 
 export default app
