@@ -3,6 +3,13 @@ import { SemesterService } from './semester.service.js'
 import catchAsync from '../../../shared/catchAsync.js'
 import sendRes from '../../../shared/sendResponse.js'
 
+export type IPaginationOptions = {
+  page?: number
+  limit?: number
+  sortBy?: string
+  sortOrder?: 'asc' | 'desc'
+}
+
 const createSemester = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const semesterData = { ...req.body }
@@ -23,6 +30,35 @@ const createSemester = catchAsync(
   },
 )
 
+const getAllSemester = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const paginationOptions: IPaginationOptions = {
+      page: Number(req.query.page),
+      limit: Number(req.query.limit),
+      sortBy: req.query.sortBy,
+      sortOrder: req.query.sortOrder,
+    }
+
+    console.log(paginationOptions)
+
+    // const result = await SemesterService.getAllSemesters(paginationOptions)
+    // sendRes(res, {
+    //   statusCode: 200,
+    //   success: true,
+    //   message: 'All semesters',
+    //   data: result,
+    // })
+    next()
+  } catch (err) {
+    next(err)
+  }
+}
+
 export const SemesterController = {
   createSemester,
+  getAllSemester,
 }

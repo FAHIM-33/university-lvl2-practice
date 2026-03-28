@@ -1,8 +1,9 @@
-import status from "http-status"
+import status from 'http-status'
 import ApiError from '../../../error/ApiError.js'
 import { semesterTitleCodeMapper } from './semester.constant.js'
 import type { ISemester } from './semester.interface.js'
 import { Semester } from './semester.model.js'
+import type { IPaginationOptions } from './semester.controller.js'
 
 const createSemester = async (payload: ISemester): Promise<ISemester> => {
   if (semesterTitleCodeMapper[payload.title] !== payload.code) {
@@ -11,6 +12,12 @@ const createSemester = async (payload: ISemester): Promise<ISemester> => {
   const result = await Semester.create(payload)
   return result
 }
+
+const getAllSemesters = (paginationOptions: IPaginationOptions) => {
+  
+}
+
 export const SemesterService = {
   createSemester,
+  getAllSemesters,
 }
