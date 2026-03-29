@@ -2,6 +2,7 @@ import type { NextFunction, Request, Response } from 'express'
 import { SemesterService } from './semester.service.js'
 import catchAsync from '../../../shared/catchAsync.js'
 import sendRes from '../../../shared/sendResponse.js'
+import pick, { paginationFields } from '../../../shared/pagination.js'
 
 export type IPaginationOptions = {
   page?: number
@@ -36,23 +37,20 @@ const getAllSemester = async (
   next: NextFunction,
 ) => {
   try {
-    const paginationOptions: IPaginationOptions = {
-      page: Number(req.query.page),
-      limit: Number(req.query.limit),
-      sortBy: req.query.sortBy,
-      sortOrder: req.query.sortOrder,
-    }
+    const paginationOptions: IPaginationOptions = pick(
+      req.query,
+      paginationFields,
+    )
 
-    console.log(paginationOptions)
+    const result = await SemesterService.getAllSemesters(paginationOptions)
 
-    // const result = await SemesterService.getAllSemesters(paginationOptions)
-    // sendRes(res, {
-    //   statusCode: 200,
-    //   success: true,
-    //   message: 'All semesters',
-    //   data: result,
-    // })
-    next()
+    sendRes(res, {
+      statusCode: 200,
+      success: true,
+      message: 'All semesters',
+      meta: result.meta,
+      data: result.data,
+    })
   } catch (err) {
     next(err)
   }
