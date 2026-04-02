@@ -2,14 +2,10 @@ import type { NextFunction, Request, Response } from 'express'
 import { SemesterService } from './semester.service.js'
 import catchAsync from '../../../shared/catchAsync.js'
 import sendRes from '../../../shared/sendResponse.js'
-import pick, { paginationFields } from '../../../shared/pagination.js'
-
-export type IPaginationOptions = {
-  page?: number
-  limit?: number
-  sortBy?: string
-  sortOrder?: 'asc' | 'desc'
-}
+import pick, {
+  paginationFields,
+  type IPaginationOptions,
+} from '../../../shared/pagination.js'
 
 const createSemester = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -41,7 +37,7 @@ const getAllSemester = async (
       req.query,
       paginationFields,
     )
-
+    console.log(paginationOptions)
     const result = await SemesterService.getAllSemesters(paginationOptions)
 
     sendRes(res, {
